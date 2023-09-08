@@ -1,0 +1,131 @@
+import sqlite3
+conn = sqlite3.connect('ESM.db')
+cursor = conn.cursor()
+
+# 1. Create table
+
+cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Employee (
+        eid INTEGER PRIMARY KEY,
+        ename TEXT,
+        dept TEXT,
+        basic REAL,
+        branch TEXT
+    )''')
+
+#2. Directly insert 5 records
+
+cursor.execute('''
+    INSERT INTO Employee (eid, ename, dept, basic, branch)
+    VALUES (1, 'Hiren', 'IT', 7000, 'Bardoli'),
+           (2, 'Ankit', 'ACCOUNTANT', 5000, 'Surat'),
+           (3, 'Bishal', 'HR', 7500, 'Delhi'),
+           (4, 'Sumit', 'HR', 5000, 'Surat'),
+           (5, 'Mehul', 'IT', 5500, 'Bardoli')
+''')
+
+# Insert 5 records using tuples
+
+employee_data = [
+    (6, 'David', 'Inventory', 5000, 'Kolkata'),
+    (7, 'Firoz', 'Account', 5000, 'Pune'),
+    (8, 'Ganesh', 'HR', 7100, 'Chennai'),
+    (9, 'Harsh', 'Inventory', 5700, 'Pune'),
+    (10, 'RV', 'IT', 7200, 'Mumbai')
+]
+cursor.executemany('''
+    INSERT INTO Employee (eid, ename, dept, basic, branch)
+    VALUES (?, ?, ?, ?, ?)
+''', employee_data)
+
+# Insert 5 records from user input
+for _ in range(5):
+    eid = int(input("Enter Employee ID: "))
+    ename = input("Enter Employee Name: ")
+    dept = input("Enter Department (Account, Inventory, IT, HR): ")
+    basic = float(input("Enter Basic Salary: "))
+    branch = input("Enter Branch: ")
+
+    cursor.execute('''
+        INSERT INTO Employee (eid, ename, dept, basic, branch)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (eid, ename, dept, basic, branch))
+
+conn.commit()
+
+# 3. Update records from "Surat" branch with a 10% salary increment
+
+cursor.execute('''
+    UPDATE Employee
+    SET basic = basic * 1.10
+    WHERE branch = 'Surat'
+    ''')
+conn.commit()
+
+# 4. Print all records
+
+cursor.execute('SELECT * FROM Employee')
+all_records = cursor.fetchall()
+print("\nAll Records:")
+for record in all_records:
+    print(record)
+
+# 5. Print records where dept is "HR" or "IT"
+
+cursor.execute('SELECT * FROM Employee WHERE dept IN ("HR", "IT")')
+hr_it_records = cursor.fetchall()
+print("\nHR and IT Department Records:")
+for record in hr_it_records:
+    print(record)
+
+# 6. Print records in sorting order of department
+
+cursor.execute('SELECT * FROM Employee ORDER BY dept')
+sorted_records = cursor.fetchall()
+print("\nRecords Sorted by Department:")
+for record in sorted_records:
+    print(record)
+
+# 7. Print records where basic is >6000
+
+cursor.execute('SELECT * FROM Employee WHERE basic > 6000')
+high_salary_records = cursor.fetchall()
+print("\nHigh Salary Records:")
+for record in high_salary_records:
+    print(record)
+
+# 8. Print records where employee name's second character is "r"
+
+cursor.execute('SELECT * FROM Employee WHERE SUBSTR(ename, 2, 1) = "r"')
+second_char_r_records = cursor.fetchall()
+print("\nRecords with Second Character 'r' in Name:")
+for record in second_char_r_records:
+    print(record)
+
+# 9. Grouping records of employees from "Account" and "Inventory"
+
+cursor.execute('''
+    SELECT dept, COUNT(*) AS count
+    FROM Employee
+    WHERE dept IN ("Account", "Inventory")
+    GROUP BY dept
+''')
+dept_grouping = cursor.fetchall()
+print("\nGrouping of Employees from 'Account' and 'Inventory' Departments:")
+for record in dept_grouping:
+    print(record[0], "-", record[1], "employees")
+
+# 10. Print all records based on branch name in descending order
+
+cursor.execute('SELECT * FROM Employee ORDER BY branch DESC')
+descending_branch_records = cursor.fetchall()
+print("\nRecords Sorted by Branch Name (Descending):")
+for record in descending_branch_records:
+    print(record)
+
+# Close the connection
+conn.close()
+
+
+
+
