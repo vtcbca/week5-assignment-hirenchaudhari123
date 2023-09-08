@@ -1,0 +1,30 @@
+# WRITE CSV FILE USING DIRECTLY
+
+import csv
+with open ('C:\SEM-3\GITHUB ASSIGNMENT\student.csv','w') as f:
+    data=csv.writer(f)
+    H=["sid","sname","city","contact"]
+    L=[[1,"Hiren","BARDOLI",7574981803],[2,"Bhupen","BARDOLI",8320825568],[3,"Savan","VYARA",9876456102],[4,"Harshil","SURAT",9909205858],[5,"Jay","BARDOLI",8322091451]]
+    data.writerow(H)
+    data.writerows(L)
+
+# writing csv file  using user input
+import csv
+with open ('C:\SEM-3\GITHUB ASSIGNMENT\student.csv','a') as f:
+    data=csv.writer(f)
+    l=[]		
+    for i in range(5):
+            name=int(input("Enter sid:"))
+            sname=input("Enter sname:")
+            city=input("Enter city:")
+            contact=int(input("Enter contact no:"))
+            C=(["sid","sname","city","contact"])
+            l.append(C)
+    data.writerows(l)	
+
+# reading csv file
+import csv
+with open ('C:\SEM-3\GITHUB ASSIGNMENT\student.csv','r',newline='') as f:
+    data=csv.reader(f)
+    for i in data:
+        print(i)
