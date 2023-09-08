@@ -1,0 +1,66 @@
+# create tables
+
+CREATE TABLE stud (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE stud_details (
+    id INT PRIMARY KEY,
+    city VARCHAR(50),
+    mobileno VARCHAR(15),
+    FOREIGN KEY (id) REFERENCES stud(id)
+);
+
+# Insert minimum 10 records for each table:
+
+INSERT INTO stud (id, name) VALUES
+(1, 'Hiren'),
+(2, 'Sumit'),
+(3, 'Bishal'),
+(4, 'Savan'),
+(5, 'Dasrath'),
+(6, 'Esha'),
+(7, 'Mehul'),
+(8, 'Om'),
+(9, 'Davil'),
+(10, 'Sonal');
+
+# Insert records into the stud_details table
+
+INSERT INTO stud_details (id, city, mobileno) VALUES
+(1, 'Surat', '7574981803'),
+(2, 'Vyara', '9889256501'),
+(3, 'Bardoli', '8892561124'),
+(4, 'Surat', '8320825678'),
+(5, 'Chennai', '6554691204'),
+(6, 'Delhi', '9183467255'),
+(7, 'Pune', '9909204848'),
+(8, 'Surat', '3210987654'),
+(9, 'Hyderabad', '9157586475'),
+(10, 'Kolkata', '9328801830');
+
+# Display students who come from the 'Surat' city:
+
+SELECT s.name
+FROM stud s
+INNER JOIN stud_details sd ON s.id = sd.id
+WHERE sd.city = 'Surat';
+ 
+# Display student details whose city name starts with 'B':
+
+SELECT s.id, s.name, sd.city, sd.mobileno
+FROM stud s
+INNER JOIN stud_details sd ON s.id = sd.id
+WHERE sd.city LIKE 'B%';
+
+# Update mobile numbers for students coming from 'Surat':
+
+UPDATE stud_details
+SET mobileno = '9973746870' 
+WHERE city = 'Surat';
+
+
+
+
+
