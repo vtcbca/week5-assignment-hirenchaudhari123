@@ -39,7 +39,7 @@ cursor.executemany('''
 ''', employee_data)
 
 # Insert 5 records from user input
-for _ in range(5):
+for i in range(5):
     eid = int(input("Enter Employee ID: "))
     ename = input("Enter Employee Name: ")
     dept = input("Enter Department (Account, Inventory, IT, HR): ")
